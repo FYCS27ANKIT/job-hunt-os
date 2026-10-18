@@ -1,0 +1,10 @@
+{
+  "name": "job-hunt-os",
+  "version": "1.0.0",
+  "description": "Job Hunt OS — Smart Job Search Platform",
+  "scripts": {
+    "server": "npm --prefix server run dev",
+    "client": "npm --prefix client run dev",
+    "seed": "npm --prefix server run seed"
+  }
+}
