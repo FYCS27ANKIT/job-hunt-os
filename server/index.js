@@ -55,6 +55,24 @@ app.use('/api/resume', resumeRoutes);
 app.use('/api/employer', employerRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Root endpoint
+app.get('/', (req, res) => {
+  res.json({
+    name: 'Job Hunt OS API',
+    status: 'online',
+    version: '1.0.0',
+    modules: ['Employee', 'Employer', 'Admin'],
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      jobs: '/api/jobs',
+      applications: '/api/applications',
+      employer: '/api/employer',
+      admin: '/api/admin'
+    }
+  });
+});
+
 // Health check endpoint
 app.get('/api/health', (req, res) => {
   res.json({
