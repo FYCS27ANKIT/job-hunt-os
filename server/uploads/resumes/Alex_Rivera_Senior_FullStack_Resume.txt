@@ -1,0 +1,30 @@
+ALEX RIVERA
+San Francisco, CA | alex.rivera@example.com | github.com/alexrivera | linkedin.com/in/alexrivera
+SENIOR FULL-STACK SOFTWARE ENGINEER
+
+SUMMARY:
+Results-driven Senior Full-Stack Engineer with 5+ years of production experience architecting high-performance distributed web applications using React, TypeScript, Node.js, Express, MongoDB, and PostgreSQL. Experienced in microservices architectures containerized with Docker and Kubernetes, deployed on AWS and GCP. Strong track record in API design, real-time WebSockets, and state optimization.
+
+CORE TECHNICAL SKILLS:
+- Languages: JavaScript (ES6+), TypeScript, Python, SQL, HTML5, CSS3
+- Frontend: React 18, Next.js, Redux Toolkit, Tailwind CSS, Webpack, Vite
+- Backend: Node.js, Express, NestJS, REST APIs, GraphQL, WebSockets, Microservices
+- Databases & Storage: MongoDB, PostgreSQL, Redis, Mongoose, Prisma
+- DevOps & Cloud: Docker, Kubernetes, AWS (ECS, S3, RDS), GitHub Actions, CI/CD, Linux
+- Methodologies: System Design, Agile/Scrum, Test-Driven Development (TDD), Jest, Cypress
+
+PROFESSIONAL EXPERIENCE:
+
+Senior Full-Stack Engineer | CloudScale Systems (2022 - Present)
+- Architected and shipped an event-driven dashboard handling 20,000 requests per minute with React, TypeScript, Node.js, and MongoDB.
+- Reduced API p99 latency from 450ms to 85ms by implementing a Redis caching layer and indexing PostgreSQL queries.
+- Spearheaded migration to Docker containerized microservices managed via GitHub Actions CI/CD pipelines.
+- Mentored 4 junior engineers on clean architectural patterns and automated unit testing with Jest.
+
+Full-Stack Developer | InnovateTech Labs (2019 - 2022)
+- Built interactive frontend client features using React, Tailwind CSS, and WebSockets for real-time collaboration.
+- Designed secure authentication workflows utilizing JWT tokens and role-based access control (RBAC).
+- Implemented robust RESTful microservice endpoints backed by MongoDB and Node.js.
+
+EDUCATION:
+Bachelor of Science in Computer Science - University of California, Berkeley

@@ -18,6 +18,13 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  role: {
+    type: String,
+    enum: ['employee', 'employer', 'admin'],
+    default: 'employee',
+    index: true
+  },
+  // Employee / Candidate Profile Fields
   targetRole: {
     type: String,
     default: 'Full Stack Software Engineer'
@@ -46,9 +53,70 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  // Resume File Upload Details
+  resumeUrl: {
+    type: String,
+    default: ''
+  },
+  resumeFileName: {
+    type: String,
+    default: ''
+  },
+  resumeOriginalName: {
+    type: String,
+    default: ''
+  },
+  resumeFileSize: {
+    type: Number,
+    default: 0
+  },
+  resumeMimeType: {
+    type: String,
+    default: ''
+  },
+  resumeUploadedAt: {
+    type: Date
+  },
   followUpDefaultDays: {
     type: Number,
     default: 5
+  },
+
+  // Employer / Recruiter Profile Fields
+  companyName: {
+    type: String,
+    default: ''
+  },
+  companyWebsite: {
+    type: String,
+    default: ''
+  },
+  companyIndustry: {
+    type: String,
+    default: 'Technology & Software'
+  },
+  companySize: {
+    type: String,
+    default: '50-200'
+  },
+  companyLocation: {
+    type: String,
+    default: 'San Francisco, CA'
+  },
+  companyDescription: {
+    type: String,
+    default: ''
+  },
+  companyLogo: {
+    type: String,
+    default: ''
+  },
+
+  // Admin & System Control
+  status: {
+    type: String,
+    enum: ['Active', 'Suspended'],
+    default: 'Active'
   }
 }, {
   timestamps: true

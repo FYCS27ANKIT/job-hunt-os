@@ -193,6 +193,30 @@ export default function ApplicationDetailModal({
             )}
           </div>
 
+          {/* Attached Resume for this application */}
+          {app.candidateResumeUrl && (
+            <div className="bg-slate-950/70 p-3 rounded-xl border border-slate-800 flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2">
+                <span className="text-base">📄</span>
+                <div>
+                  <div className="font-bold text-white">
+                    {app.candidateResumeFileName || 'Submitted Resume Document'}
+                  </div>
+                  <div className="text-[10px] text-slate-400">Attached candidate document</div>
+                </div>
+              </div>
+              <a
+                href={app.candidateResumeUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="px-3 py-1.5 bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-300 border border-emerald-500/30 rounded-lg text-xs font-bold transition flex items-center gap-1"
+              >
+                <span>View File</span>
+                <ExternalLink className="w-3 h-3" />
+              </a>
+            </div>
+          )}
+
           {/* AI Skill Gap Card */}
           <div className="bg-slate-950/70 border border-emerald-500/25 rounded-xl p-4 shadow-sm">
             <div className="flex items-center justify-between mb-3">

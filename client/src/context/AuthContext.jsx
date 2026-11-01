@@ -41,8 +41,24 @@ export const AuthProvider = ({ children }) => {
     return res.data;
   };
 
-  const demoLogin = async () => {
+  const demoLogin = async (role = 'employee') => {
+    if (role === 'employer') {
+      return login('employer@techcorp.com', 'password123');
+    } else if (role === 'admin') {
+      return login('admin@jobhuntos.com', 'password123');
+    }
     return login('demo@jobhuntos.com', 'password123');
+  };
+
+  const switchActiveRole = async (newRole) => {
+    try {
+      const res = await API.post('/auth/switch-role', { role: newRole });
+      setUser(res.data.user);
+      return res.data.user;
+    } catch (err) {
+      console.error('Failed to switch role:', err);
+      throw err;
+    }
   };
 
   const logout = () => {
@@ -58,7 +74,20 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, demoLogin, logout, updateUser }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        setUser,
+        token,
+        loading,
+        login,
+        register,
+        demoLogin,
+        switchActiveRole,
+        logout,
+        updateUser
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

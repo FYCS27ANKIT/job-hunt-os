@@ -1,0 +1,3 @@
+JANE DOE RESUME
+Skills: React, TypeScript, Python, Docker, Kubernetes, GraphQL, PostgreSQL
+Experience: 4 years as Frontend Engineer.

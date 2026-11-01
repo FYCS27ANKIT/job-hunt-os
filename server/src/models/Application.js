@@ -7,6 +7,18 @@ const applicationSchema = new mongoose.Schema({
     required: true,
     index: true
   },
+  // If applied to a platform-posted job:
+  job: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Job',
+    index: true
+  },
+  // If linked to an employer on the platform:
+  employer: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    index: true
+  },
   company: {
     type: String,
     required: true,
@@ -39,7 +51,7 @@ const applicationSchema = new mongoose.Schema({
   },
   source: {
     type: String,
-    enum: ['LinkedIn', 'Indeed', 'Wellfound', 'Referral', 'Company Website', 'Recruiter Reachout', 'Other'],
+    enum: ['Platform Job Board', 'LinkedIn', 'Indeed', 'Wellfound', 'Referral', 'Company Website', 'Recruiter Reachout', 'Other'],
     default: 'LinkedIn'
   },
   salary: {
@@ -52,6 +64,35 @@ const applicationSchema = new mongoose.Schema({
     default: ''
   },
   jobUrl: {
+    type: String,
+    default: ''
+  },
+  // Candidate application specifics (when applying to employer job)
+  candidateName: {
+    type: String,
+    default: ''
+  },
+  candidateEmail: {
+    type: String,
+    default: ''
+  },
+  candidatePhone: {
+    type: String,
+    default: ''
+  },
+  candidateResumeUrl: {
+    type: String,
+    default: ''
+  },
+  candidateResumeFileName: {
+    type: String,
+    default: ''
+  },
+  candidateCoverNote: {
+    type: String,
+    default: ''
+  },
+  recruiterNotes: {
     type: String,
     default: ''
   },

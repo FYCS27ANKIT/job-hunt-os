@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import API from '../services/api';
 import { X, User, DollarSign, Target, Sparkles, Plus, Trash2 } from 'lucide-react';
 
-export default function ProfileModal({ isOpen, onClose, onProfileUpdated }) {
+export default function ProfileModal({ isOpen, onClose, onProfileUpdated, onOpenResumeModal }) {
   const { user, updateUser } = useAuth();
 
   const [name, setName] = useState(user?.name || '');
@@ -94,6 +94,29 @@ export default function ProfileModal({ isOpen, onClose, onProfileUpdated }) {
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+          {/* Resume Upload Quick Banner */}
+          <div className="bg-slate-950/70 border border-emerald-500/30 p-3.5 rounded-2xl flex items-center justify-between">
+            <div className="flex items-center gap-2.5">
+              <span className="text-xl">📄</span>
+              <div>
+                <div className="text-xs font-bold text-white">
+                  {user?.resumeUrl ? (user?.resumeOriginalName || 'Resume file attached') : 'No resume file uploaded yet'}
+                </div>
+                <div className="text-[10px] text-slate-400">
+                  {user?.resumeUrl ? 'Automatic ATS skill indexing active' : 'Upload PDF/DOCX/TXT for 1-click apply'}
+                </div>
+              </div>
+            </div>
+            {onOpenResumeModal && (
+              <button
+                type="button"
+                onClick={onOpenResumeModal}
+                className="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl transition shadow-sm"
+              >
+                {user?.resumeUrl ? 'Manage Resume' : 'Upload Resume'}
+              </button>
+            )}
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>

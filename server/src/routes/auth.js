@@ -16,7 +16,21 @@ const generateToken = (userId) => {
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password, targetRole, targetSalary, resumeSkills, resumeText, location, experienceYears } = req.body;
+    const {
+      name,
+      email,
+      password,
+      role,
+      targetRole,
+      targetSalary,
+      resumeSkills,
+      resumeText,
+      location,
+      experienceYears,
+      companyName,
+      companyWebsite,
+      companyIndustry
+    } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'Name, email, and password are required.' });
@@ -36,16 +50,22 @@ router.post('/register', async (req, res) => {
       skills = extractSkillsFromText(resumeText);
     }
 
+    const selectedRole = ['employee', 'employer', 'admin'].includes(role) ? role : 'employee';
+
     const user = new User({
       name,
       email,
       password,
+      role: selectedRole,
       targetRole: targetRole || 'Full Stack Software Engineer',
       targetSalary: targetSalary || 120000,
       resumeSkills: skills.length > 0 ? skills : ['React', 'Node.js', 'TypeScript', 'MongoDB', 'REST APIs', 'Git'],
       resumeText: resumeText || '',
       location: location || 'Remote / Hybrid',
-      experienceYears: experienceYears || 3
+      experienceYears: experienceYears || 3,
+      companyName: companyName || (selectedRole === 'employer' ? `${name}'s Company` : ''),
+      companyWebsite: companyWebsite || '',
+      companyIndustry: companyIndustry || 'Technology'
     });
 
     await user.save();
@@ -57,10 +77,15 @@ router.post('/register', async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
         targetRole: user.targetRole,
         targetSalary: user.targetSalary,
         resumeSkills: user.resumeSkills,
         resumeText: user.resumeText,
+        resumeUrl: user.resumeUrl,
+        resumeOriginalName: user.resumeOriginalName,
+        companyName: user.companyName,
+        companyWebsite: user.companyWebsite,
         location: user.location,
         experienceYears: user.experienceYears
       }
@@ -84,6 +109,10 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
+    if (user.status === 'Suspended') {
+      return res.status(403).json({ message: 'This account has been suspended by an administrator.' });
+    }
+
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid email or password.' });
@@ -97,10 +126,15 @@ router.post('/login', async (req, res) => {
         id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role || 'employee',
         targetRole: user.targetRole,
         targetSalary: user.targetSalary,
         resumeSkills: user.resumeSkills,
         resumeText: user.resumeText,
+        resumeUrl: user.resumeUrl,
+        resumeOriginalName: user.resumeOriginalName,
+        companyName: user.companyName,
+        companyWebsite: user.companyWebsite,
         location: user.location,
         experienceYears: user.experienceYears,
         followUpDefaultDays: user.followUpDefaultDays
@@ -120,7 +154,22 @@ router.get('/me', auth, async (req, res) => {
 // PUT /api/auth/profile
 router.put('/profile', auth, async (req, res) => {
   try {
-    const { name, targetRole, targetSalary, resumeSkills, resumeText, location, experienceYears, followUpDefaultDays } = req.body;
+    const {
+      name,
+      targetRole,
+      targetSalary,
+      resumeSkills,
+      resumeText,
+      location,
+      experienceYears,
+      followUpDefaultDays,
+      companyName,
+      companyWebsite,
+      companyIndustry,
+      companyDescription,
+      companyLocation
+    } = req.body;
+
     const user = req.user;
 
     if (name) user.name = name;
@@ -130,6 +179,13 @@ router.put('/profile', auth, async (req, res) => {
     if (experienceYears !== undefined) user.experienceYears = experienceYears;
     if (followUpDefaultDays !== undefined) user.followUpDefaultDays = followUpDefaultDays;
     
+    // Employer fields
+    if (companyName) user.companyName = companyName;
+    if (companyWebsite !== undefined) user.companyWebsite = companyWebsite;
+    if (companyIndustry) user.companyIndustry = companyIndustry;
+    if (companyDescription !== undefined) user.companyDescription = companyDescription;
+    if (companyLocation !== undefined) user.companyLocation = companyLocation;
+
     if (resumeText !== undefined) {
       user.resumeText = resumeText;
     }
@@ -145,6 +201,29 @@ router.put('/profile', auth, async (req, res) => {
   } catch (error) {
     console.error('Profile update error:', error);
     res.status(500).json({ message: 'Failed to update profile.', error: error.message });
+  }
+});
+
+// POST /api/auth/switch-role - Fast role switch for demo / multi-module testing
+router.post('/switch-role', auth, async (req, res) => {
+  try {
+    const { role } = req.body;
+    if (!['employee', 'employer', 'admin'].includes(role)) {
+      return res.status(400).json({ message: 'Invalid role specified' });
+    }
+
+    const user = await User.findById(req.userId);
+    user.role = role;
+    if (role === 'employer' && !user.companyName) {
+      user.companyName = 'TechCorp Labs';
+      user.companyWebsite = 'https://techcorp.example.com';
+    }
+    await user.save();
+
+    res.json({ message: `Active workspace switched to ${role}`, user });
+  } catch (error) {
+    console.error('Role switch error:', error);
+    res.status(500).json({ message: 'Failed to switch role', error: error.message });
   }
 });
 

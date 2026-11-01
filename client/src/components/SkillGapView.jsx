@@ -19,7 +19,8 @@ export default function SkillGapView({
   applications,
   onRefreshApplications,
   onSelectApplication,
-  onOpenProfile
+  onOpenProfile,
+  onOpenResumeModal
 }) {
   const { user } = useAuth();
   const [analyzing, setAnalyzing] = useState(false);
@@ -98,16 +99,25 @@ export default function SkillGapView({
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-2.5">
+            {onOpenResumeModal && (
+              <button
+                onClick={onOpenResumeModal}
+                className="flex items-center gap-1.5 px-3.5 py-2 bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-500/30 rounded-xl text-xs font-bold text-emerald-300 transition"
+              >
+                <span>📄</span>
+                <span>{user?.resumeUrl ? 'Manage Resume File' : 'Upload Resume File'}</span>
+              </button>
+            )}
             <button
               onClick={onOpenProfile}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl text-xs font-semibold text-slate-200 transition"
+              className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded-xl text-xs font-semibold text-slate-200 transition"
             >
-              Edit Resume & Skills
+              Edit Profile
             </button>
             <button
               onClick={onRefreshApplications}
-              className="flex items-center gap-1.5 px-4 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition shadow-md shadow-emerald-500/20 active:scale-95"
+              className="flex items-center gap-1.5 px-3.5 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition shadow-md shadow-emerald-500/20 active:scale-95"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               Re-scan All Jobs
