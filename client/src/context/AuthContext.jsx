@@ -4,8 +4,13 @@ import API from '../services/api';
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+  const getInitialToken = () => {
+    const saved = localStorage.getItem('job_hunt_os_token');
+    return (saved && saved !== 'undefined' && saved !== 'null') ? saved : null;
+  };
+
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('job_hunt_os_token') || null);
+  const [token, setToken] = useState(getInitialToken);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -13,7 +18,11 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           const res = await API.get('/auth/me');
-          setUser(res.data.user);
+          if (res.data?.user) {
+            setUser(res.data.user);
+          } else {
+            logout();
+          }
         } catch (err) {
           console.error('Failed to authenticate token:', err);
           logout();
@@ -27,6 +36,9 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     const res = await API.post('/auth/login', { email, password });
+    if (!res.data || !res.data.token) {
+      throw new Error('Authentication succeeded but server returned an invalid payload.');
+    }
     localStorage.setItem('job_hunt_os_token', res.data.token);
     setToken(res.data.token);
     setUser(res.data.user);
@@ -35,6 +47,9 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (formData) => {
     const res = await API.post('/auth/register', formData);
+    if (!res.data || !res.data.token) {
+      throw new Error('Registration succeeded but server returned an invalid payload.');
+    }
     localStorage.setItem('job_hunt_os_token', res.data.token);
     setToken(res.data.token);
     setUser(res.data.user);

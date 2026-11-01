@@ -8,18 +8,16 @@ import {
   AlertCircle,
   Plus,
   Search,
-  Filter,
-  CheckCircle2,
-  Calendar
+  Filter
 } from 'lucide-react';
 
 const COLUMNS = [
-  { id: 'Wishlist', label: 'Wishlist', color: 'border-slate-700 bg-slate-900/40 text-slate-400' },
-  { id: 'Applied', label: 'Applied', color: 'border-blue-500/30 bg-blue-950/20 text-blue-400' },
-  { id: 'Screening', label: 'Screening', color: 'border-indigo-500/30 bg-indigo-950/20 text-indigo-400' },
-  { id: 'Interviewing', label: 'Interviewing', color: 'border-amber-500/30 bg-amber-950/20 text-amber-400' },
-  { id: 'Offer', label: 'Offer Received', color: 'border-emerald-500/30 bg-emerald-950/20 text-emerald-400' },
-  { id: 'Rejected', label: 'Archived / Rejected', color: 'border-rose-500/30 bg-rose-950/20 text-rose-400' }
+  { id: 'Wishlist', label: 'Wishlist', dotColor: 'bg-slate-400' },
+  { id: 'Applied', label: 'Applied', dotColor: 'bg-sky-500' },
+  { id: 'Screening', label: 'Screening', dotColor: 'bg-indigo-500' },
+  { id: 'Interviewing', label: 'Interviewing', dotColor: 'bg-amber-500' },
+  { id: 'Offer', label: 'Offer Received', dotColor: 'bg-emerald-500' },
+  { id: 'Rejected', label: 'Archived / Rejected', dotColor: 'bg-rose-500' }
 ];
 
 export default function KanbanBoard({
@@ -70,7 +68,7 @@ export default function KanbanBoard({
   return (
     <div className="space-y-6">
       {/* Search & Filter Bar */}
-      <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-slate-800/40 p-4 rounded-2xl border border-slate-700/60 backdrop-blur-sm">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
         <div className="relative w-full md:w-96">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
@@ -78,7 +76,7 @@ export default function KanbanBoard({
             placeholder="Search company, role, or location..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500 transition"
+            className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 transition"
           />
         </div>
 
@@ -88,7 +86,7 @@ export default function KanbanBoard({
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="bg-slate-900 border border-slate-700 text-slate-300 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-emerald-500"
+              className="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-xl px-3 py-2 focus:outline-none focus:border-sky-500"
             >
               <option value="all">All Priorities</option>
               <option value="High">High Priority</option>
@@ -99,7 +97,7 @@ export default function KanbanBoard({
 
           <button
             onClick={() => onOpenNewModal('Applied')}
-            className="flex items-center gap-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm active:scale-95 whitespace-nowrap"
+            className="flex items-center gap-1.5 bg-sky-600 hover:bg-sky-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition shadow-sm shadow-sky-600/20 active:scale-95 whitespace-nowrap"
           >
             <Plus className="w-4 h-4" />
             Add Application
@@ -117,23 +115,17 @@ export default function KanbanBoard({
               key={col.id}
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, col.id)}
-              className="flex flex-col bg-slate-900/60 rounded-2xl border border-slate-800 p-3 min-h-[500px] transition-colors"
+              className="flex flex-col bg-slate-100/70 rounded-2xl border border-slate-200/80 p-3 min-h-[500px] transition-colors"
             >
               {/* Column Header */}
-              <div className="flex items-center justify-between pb-3 mb-2 border-b border-slate-800">
+              <div className="flex items-center justify-between pb-3 mb-2 border-b border-slate-200">
                 <div className="flex items-center gap-2">
-                  <span className={`w-2 h-2 rounded-full ${
-                    col.id === 'Offer' ? 'bg-emerald-400' :
-                    col.id === 'Interviewing' ? 'bg-amber-400' :
-                    col.id === 'Screening' ? 'bg-indigo-400' :
-                    col.id === 'Applied' ? 'bg-blue-400' :
-                    col.id === 'Rejected' ? 'bg-rose-400' : 'bg-slate-400'
-                  }`} />
-                  <h3 className="text-xs font-bold text-slate-200 tracking-wide uppercase">
+                  <span className={`w-2.5 h-2.5 rounded-full ${col.dotColor}`} />
+                  <h3 className="text-xs font-bold text-slate-700 tracking-wide uppercase">
                     {col.label}
                   </h3>
                 </div>
-                <span className="text-[11px] font-bold text-slate-400 bg-slate-800/80 px-2 py-0.5 rounded-full border border-slate-700/60">
+                <span className="text-[11px] font-bold text-slate-600 bg-white px-2 py-0.5 rounded-full border border-slate-200 shadow-2xs">
                   {colApps.length}
                 </span>
               </div>
@@ -150,15 +142,15 @@ export default function KanbanBoard({
                       draggable
                       onDragStart={(e) => handleDragStart(e, app._id)}
                       onClick={() => onSelectApplication(app)}
-                      className="group cursor-pointer bg-slate-800/80 hover:bg-slate-800 border border-slate-700/60 hover:border-emerald-500/50 rounded-xl p-3.5 transition-all shadow-md hover:shadow-emerald-500/10 active:scale-[0.98]"
+                      className="group cursor-pointer bg-white hover:bg-slate-50/60 border border-slate-200/90 hover:border-sky-300 rounded-xl p-3.5 transition-all shadow-xs hover:shadow-md active:scale-[0.98]"
                     >
                       {/* Company & Role */}
                       <div className="flex items-start justify-between gap-2 mb-2">
                         <div>
-                          <h4 className="font-bold text-sm text-white group-hover:text-emerald-400 transition-colors leading-tight">
+                          <h4 className="font-bold text-sm text-slate-900 group-hover:text-sky-700 transition-colors leading-tight">
                             {app.company}
                           </h4>
-                          <p className="text-xs text-slate-300 font-medium mt-0.5 line-clamp-1">
+                          <p className="text-xs text-slate-600 font-medium mt-0.5 line-clamp-1">
                             {app.role}
                           </p>
                         </div>
@@ -167,10 +159,10 @@ export default function KanbanBoard({
                         <div
                           className={`flex items-center gap-1 text-[11px] font-extrabold px-1.5 py-0.5 rounded-md border ${
                             app.matchScore >= 80
-                              ? 'bg-emerald-500/15 text-emerald-400 border-emerald-500/30'
+                              ? 'bg-emerald-50 text-emerald-700 border-emerald-200'
                               : app.matchScore >= 60
-                              ? 'bg-amber-500/15 text-amber-400 border-amber-500/30'
-                              : 'bg-slate-700/30 text-slate-400 border-slate-700'
+                              ? 'bg-amber-50 text-amber-700 border-amber-200'
+                              : 'bg-slate-100 text-slate-600 border-slate-200'
                           }`}
                           title={`Resume match score: ${app.matchScore}%`}
                         >
@@ -180,18 +172,18 @@ export default function KanbanBoard({
                       </div>
 
                       {/* Location & Work Type */}
-                      <div className="flex items-center gap-1.5 text-[11px] text-slate-400 mb-2">
-                        <MapPin className="w-3 h-3 text-slate-500 shrink-0" />
+                      <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mb-2">
+                        <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
                         <span className="truncate">{app.location || 'Remote'}</span>
-                        <span className="text-slate-600">•</span>
-                        <span className="text-[10px] bg-slate-700/50 px-1 rounded text-slate-300">
+                        <span className="text-slate-300">•</span>
+                        <span className="text-[10px] bg-slate-100 px-1.5 py-0.5 rounded text-slate-600 font-medium">
                           {app.workType}
                         </span>
                       </div>
 
                       {/* Salary if available */}
                       {app.salary && app.salary.max > 0 && (
-                        <div className="flex items-center gap-1 text-[11px] font-semibold text-emerald-400 mb-2.5">
+                        <div className="flex items-center gap-1 text-[11px] font-semibold text-emerald-600 mb-2.5">
                           <DollarSign className="w-3 h-3" />
                           <span>
                             ${(app.salary.min / 1000).toFixed(0)}k - ${(app.salary.max / 1000).toFixed(0)}k
@@ -200,24 +192,24 @@ export default function KanbanBoard({
                       )}
 
                       {/* Bottom Tags / Alerts */}
-                      <div className="pt-2 border-t border-slate-700/50 flex items-center justify-between gap-2 text-[10px]">
-                        <span className={`px-1.5 py-0.5 rounded font-semibold ${
+                      <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2 text-[10px]">
+                        <span className={`px-2 py-0.5 rounded font-semibold border ${
                           app.priority === 'High'
-                            ? 'bg-rose-500/10 text-rose-400 border border-rose-500/20'
+                            ? 'bg-rose-50 text-rose-700 border-rose-200'
                             : app.priority === 'Medium'
-                            ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-                            : 'bg-slate-700/50 text-slate-400'
+                            ? 'bg-amber-50 text-amber-700 border-amber-200'
+                            : 'bg-slate-100 text-slate-600 border-slate-200'
                         }`}>
                           {app.priority}
                         </span>
 
                         {isFollowUpDue ? (
-                          <div className="flex items-center gap-1 text-rose-400 font-bold bg-rose-500/10 px-1.5 py-0.5 rounded border border-rose-500/20">
-                            <AlertCircle className="w-3 h-3" />
+                          <div className="flex items-center gap-1 text-rose-700 font-bold bg-rose-50 px-1.5 py-0.5 rounded border border-rose-200">
+                            <AlertCircle className="w-3 h-3 text-rose-500" />
                             <span>Follow-up</span>
                           </div>
                         ) : (
-                          <div className="flex items-center gap-1 text-slate-500">
+                          <div className="flex items-center gap-1 text-slate-400 font-medium">
                             <Clock className="w-3 h-3" />
                             <span>{daysAgo === 0 ? 'Today' : `${daysAgo}d ago`}</span>
                           </div>
@@ -228,11 +220,11 @@ export default function KanbanBoard({
                 })}
 
                 {colApps.length === 0 && (
-                  <div className="flex flex-col items-center justify-center p-6 text-center border border-dashed border-slate-800 rounded-xl text-slate-500">
+                  <div className="flex flex-col items-center justify-center p-6 text-center border border-dashed border-slate-200 rounded-xl text-slate-400 bg-white/40">
                     <p className="text-xs">No jobs in {col.label}</p>
                     <button
                       onClick={() => onOpenNewModal(col.id)}
-                      className="mt-2 text-[11px] text-emerald-400 hover:text-emerald-300 font-semibold"
+                      className="mt-2 text-[11px] text-sky-600 hover:text-sky-700 font-semibold"
                     >
                       + Add to column
                     </button>

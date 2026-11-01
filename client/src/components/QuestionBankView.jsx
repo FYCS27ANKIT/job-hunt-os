@@ -4,13 +4,10 @@ import {
   MessageSquareQuote,
   Plus,
   Search,
-  Filter,
   CheckCircle,
   Sparkles,
-  BookOpen,
   ChevronDown,
   ChevronUp,
-  Award,
   Zap,
   Trash2
 } from 'lucide-react';
@@ -56,7 +53,6 @@ export default function QuestionBankView({
       });
       const generated = res.data.questions || [];
       
-      // Save them into question bank
       for (const q of generated) {
         await API.post('/questions', {
           question: q.question,
@@ -93,13 +89,13 @@ export default function QuestionBankView({
   return (
     <div className="space-y-6 pb-12">
       {/* Header bar */}
-      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 bg-slate-800/40 p-5 rounded-2xl border border-slate-700/60 backdrop-blur-sm">
+      <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
         <div>
           <div className="flex items-center gap-2">
-            <MessageSquareQuote className="w-5 h-5 text-emerald-400" />
-            <h2 className="text-xl font-extrabold text-white">Interview Question Bank & Feedback</h2>
+            <MessageSquareQuote className="w-5 h-5 text-sky-600" />
+            <h2 className="text-xl font-extrabold text-slate-900">Interview Question Bank & Feedback</h2>
           </div>
-          <p className="text-xs text-slate-400 mt-1">
+          <p className="text-xs text-slate-500 mt-1">
             Store encountered interview questions, model answers, and retrospective self-coaching notes.
           </p>
         </div>
@@ -108,15 +104,15 @@ export default function QuestionBankView({
           <button
             onClick={handleGenerateAIQuestions}
             disabled={generatingAI}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-gradient-to-r from-teal-500 to-emerald-500 hover:from-teal-400 hover:to-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition shadow-md active:scale-95 disabled:opacity-50"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 font-bold rounded-xl text-xs transition active:scale-95 disabled:opacity-50"
           >
-            <Sparkles className="w-3.5 h-3.5" />
+            <Sparkles className="w-3.5 h-3.5 text-sky-600" />
             {generatingAI ? 'Generating...' : 'AI Question Generator'}
           </button>
 
           <button
             onClick={onOpenNewQuestionModal}
-            className="flex items-center gap-1.5 px-3.5 py-2 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-xl text-xs transition shadow-md active:scale-95"
+            className="flex items-center gap-1.5 px-3.5 py-2 bg-sky-600 hover:bg-sky-700 text-white font-bold rounded-xl text-xs transition shadow-sm shadow-sky-600/20 active:scale-95"
           >
             <Plus className="w-4 h-4" />
             Add Custom Question
@@ -125,7 +121,7 @@ export default function QuestionBankView({
       </div>
 
       {/* Filter and Search */}
-      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+      <div className="flex flex-col sm:flex-row items-center justify-between gap-3 bg-white p-3 rounded-xl border border-slate-200 shadow-xs">
         <div className="relative w-full sm:w-80">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
@@ -133,7 +129,7 @@ export default function QuestionBankView({
             placeholder="Search questions or keywords..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 bg-slate-800 border border-slate-700 rounded-lg text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+            className="w-full pl-9 pr-3 py-1.5 bg-slate-50 border border-slate-300 rounded-lg text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-sky-500"
           />
         </div>
 
@@ -141,7 +137,7 @@ export default function QuestionBankView({
           <select
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
-            className="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-emerald-500"
+            className="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-sky-500"
           >
             <option value="all">All Categories</option>
             <option value="Technical">Technical</option>
@@ -154,7 +150,7 @@ export default function QuestionBankView({
           <select
             value={selectedDifficulty}
             onChange={(e) => setSelectedDifficulty(e.target.value)}
-            className="bg-slate-800 border border-slate-700 text-slate-200 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-emerald-500"
+            className="bg-slate-50 border border-slate-300 text-slate-700 text-xs rounded-lg px-2.5 py-1.5 focus:outline-none focus:border-sky-500"
           >
             <option value="all">All Difficulties</option>
             <option value="Easy">Easy</option>
@@ -164,7 +160,7 @@ export default function QuestionBankView({
         </div>
       </div>
 
-      {/* Questions List */}
+      {/* Question Cards Grid */}
       <div className="space-y-3">
         {filteredQuestions.map((q) => {
           const isExpanded = expandedId === q._id;
@@ -173,87 +169,86 @@ export default function QuestionBankView({
             <div
               key={q._id}
               onClick={() => setExpandedId(isExpanded ? null : q._id)}
-              className="bg-slate-900/80 hover:bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-4 transition-all cursor-pointer shadow-sm"
+              className="cursor-pointer bg-white border border-slate-200/90 hover:border-sky-300 rounded-xl transition-all shadow-xs hover:shadow-md"
             >
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex-1">
-                  <div className="flex flex-wrap items-center gap-2 mb-2">
-                    <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 border border-slate-700">
-                      {q.company || 'General'}
-                    </span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      q.category === 'System Design' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' :
-                      q.category === 'Behavioral' ? 'bg-blue-500/10 text-blue-400 border border-blue-500/20' :
-                      q.category === 'Live Coding' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/20' :
-                      'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20'
-                    }`}>
+              <div className="p-4 flex items-start justify-between gap-4">
+                <div className="space-y-1.5 flex-1">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[10px] font-bold uppercase px-2 py-0.5 rounded bg-sky-50 text-sky-700 border border-sky-200">
                       {q.category}
                     </span>
-                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                      q.difficulty === 'Hard' ? 'text-rose-400 bg-rose-500/10' :
-                      q.difficulty === 'Medium' ? 'text-amber-400 bg-amber-500/10' :
-                      'text-emerald-400 bg-emerald-500/10'
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded border ${
+                      q.difficulty === 'Hard' ? 'bg-rose-50 text-rose-700 border-rose-200' :
+                      q.difficulty === 'Medium' ? 'bg-amber-50 text-amber-700 border-amber-200' :
+                      'bg-emerald-50 text-emerald-700 border-emerald-200'
                     }`}>
                       {q.difficulty}
                     </span>
+                    {q.company && (
+                      <span className="text-[11px] text-slate-500 font-medium">
+                        @{q.company}
+                      </span>
+                    )}
                   </div>
 
-                  <h3 className="text-sm sm:text-base font-bold text-white leading-snug">
+                  <h3 className="text-sm font-bold text-slate-900 leading-snug">
                     {q.question}
                   </h3>
                 </div>
 
                 <div className="flex items-center gap-2 shrink-0">
-                  {/* Practice counter button */}
                   <button
                     onClick={(e) => handlePracticeCount(q._id, e)}
-                    className="flex items-center gap-1.5 px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-emerald-400 rounded-lg text-xs font-semibold border border-slate-700 transition"
-                    title="Click to increment practice session"
+                    className="flex items-center gap-1 px-2.5 py-1 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg text-xs font-semibold border border-slate-200 transition"
+                    title="Click to increment practice count"
                   >
-                    <Award className="w-3.5 h-3.5 text-amber-400" />
-                    <span>Practiced {q.timesPracticed || 0}x</span>
+                    <CheckCircle className="w-3.5 h-3.5 text-emerald-600" />
+                    <span>{q.timesPracticed || 0}</span>
                   </button>
 
                   <button
                     onClick={(e) => handleDelete(q._id, e)}
-                    className="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg transition"
+                    className="p-1 text-slate-400 hover:text-rose-600 rounded-lg"
                     title="Delete question"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
 
-                  <div className="text-slate-500 p-1">
-                    {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-                  </div>
+                  {isExpanded ? (
+                    <ChevronUp className="w-4 h-4 text-slate-400" />
+                  ) : (
+                    <ChevronDown className="w-4 h-4 text-slate-400" />
+                  )}
                 </div>
               </div>
 
-              {/* Expanded details: Answer Key & Takeaways */}
+              {/* Collapsible Model Answer & Notes */}
               {isExpanded && (
-                <div className="mt-4 pt-4 border-t border-slate-800 space-y-3 cursor-default" onClick={(e) => e.stopPropagation()}>
+                <div className="px-4 pb-4 pt-2 border-t border-slate-100 bg-slate-50/70 text-xs space-y-3 rounded-b-xl">
                   {q.answerKey && (
-                    <div className="bg-slate-950/70 p-3.5 rounded-xl border border-slate-800/80 text-xs">
-                      <div className="flex items-center gap-1.5 font-bold text-emerald-400 mb-1.5">
-                        <BookOpen className="w-3.5 h-3.5" />
-                        <span>Recommended Answer Structure / STAR Key</span>
+                    <div>
+                      <div className="font-bold text-slate-700 uppercase text-[10px] tracking-wider mb-1">
+                        Model Answer / STAR Framework:
                       </div>
-                      <p className="text-slate-300 whitespace-pre-line leading-relaxed">
+                      <div className="bg-white p-3 rounded-lg border border-slate-200 text-slate-700 leading-relaxed font-mono whitespace-pre-wrap text-[11px]">
                         {q.answerKey}
-                      </p>
+                      </div>
+                    </div>
+                  )}
+
+                  {q.myNotes && (
+                    <div className="p-3 bg-amber-50 rounded-lg border border-amber-200 text-amber-900">
+                      <div className="font-bold text-[10px] uppercase mb-0.5">My Personal Coaching Notes:</div>
+                      <p>{q.myNotes}</p>
                     </div>
                   )}
 
                   {q.keyTakeaways?.length > 0 && (
-                    <div className="bg-slate-950/50 p-3 rounded-xl border border-slate-800/80 text-xs">
-                      <span className="font-bold text-amber-400 text-[11px] uppercase tracking-wider block mb-1">
-                        Personal Feedback & Retention Points:
-                      </span>
-                      <ul className="space-y-1 text-slate-300">
-                        {q.keyTakeaways.map((tip, idx) => (
-                          <li key={idx} className="flex items-start gap-1.5">
-                            <span className="text-emerald-400">✓</span>
-                            <span>{tip}</span>
-                          </li>
+                    <div>
+                      <div className="font-bold text-slate-600 uppercase text-[10px] mb-1">Key Takeaways:</div>
+                      <ul className="list-disc pl-4 space-y-0.5 text-slate-600">
+                        {q.keyTakeaways.map((point, idx) => (
+                          <li key={idx}>{point}</li>
                         ))}
                       </ul>
                     </div>
@@ -265,12 +260,8 @@ export default function QuestionBankView({
         })}
 
         {filteredQuestions.length === 0 && (
-          <div className="py-16 text-center bg-slate-900/40 rounded-2xl border border-dashed border-slate-800">
-            <MessageSquareQuote className="w-10 h-10 text-slate-600 mx-auto mb-3" />
-            <h4 className="text-base font-bold text-slate-300">No questions found</h4>
-            <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-              Add questions from your recent interviews or use the AI Generator to prepare for upcoming rounds.
-            </p>
+          <div className="py-16 text-center bg-white rounded-2xl border border-dashed border-slate-200 text-slate-400">
+            No questions match your current filters. Add or generate AI questions above.
           </div>
         )}
       </div>

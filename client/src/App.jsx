@@ -109,8 +109,9 @@ function MainApp() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400 text-xs">
-        Loading Job Hunt OS Multi-Module Platform...
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center text-slate-600 text-xs font-bold gap-2">
+        <div className="w-4 h-4 border-2 border-sky-600 border-t-transparent rounded-full animate-spin" />
+        <span>Loading Job Hunt OS Platform...</span>
       </div>
     );
   }
@@ -122,7 +123,7 @@ function MainApp() {
   const currentRole = user.role || 'employee';
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex">
       {/* Vertical Navigation Sidebar */}
       <Sidebar
         activeTab={activeTab}

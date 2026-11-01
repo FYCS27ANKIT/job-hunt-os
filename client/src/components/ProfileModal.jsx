@@ -81,28 +81,28 @@ export default function ProfileModal({ isOpen, onClose, onProfileUpdated, onOpen
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl my-8">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm overflow-y-auto">
+      <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl my-8">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/70">
           <div>
-            <h3 className="text-base font-bold text-white">Career Profile & Resume Settings</h3>
-            <p className="text-xs text-slate-400">Used by the AI engine to score job matches and detect skill gaps.</p>
+            <h3 className="text-base font-bold text-slate-900">Career Profile & Resume Settings</h3>
+            <p className="text-xs text-slate-500">Used by the AI engine to score job matches and detect skill gaps.</p>
           </div>
-          <button onClick={onClose} className="p-1 text-slate-400 hover:text-white rounded-lg">
+          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition">
             <X className="w-5 h-5" />
           </button>
         </div>
 
         <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
           {/* Resume Upload Quick Banner */}
-          <div className="bg-slate-950/70 border border-emerald-500/30 p-3.5 rounded-2xl flex items-center justify-between">
+          <div className="bg-sky-50/60 border border-sky-100 p-3.5 rounded-2xl flex items-center justify-between">
             <div className="flex items-center gap-2.5">
               <span className="text-xl">📄</span>
               <div>
-                <div className="text-xs font-bold text-white">
+                <div className="text-xs font-bold text-slate-900">
                   {user?.resumeUrl ? (user?.resumeOriginalName || 'Resume file attached') : 'No resume file uploaded yet'}
                 </div>
-                <div className="text-[10px] text-slate-400">
+                <div className="text-[10px] text-slate-500">
                   {user?.resumeUrl ? 'Automatic ATS skill indexing active' : 'Upload PDF/DOCX/TXT for 1-click apply'}
                 </div>
               </div>
@@ -111,7 +111,7 @@ export default function ProfileModal({ isOpen, onClose, onProfileUpdated, onOpen
               <button
                 type="button"
                 onClick={onOpenResumeModal}
-                className="px-3 py-1.5 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs rounded-xl transition shadow-sm"
+                className="px-3 py-1.5 bg-sky-600 hover:bg-sky-500 text-white font-bold text-xs rounded-xl transition shadow-sm"
               >
                 {user?.resumeUrl ? 'Manage Resume' : 'Upload Resume'}
               </button>
@@ -119,71 +119,71 @@ export default function ProfileModal({ isOpen, onClose, onProfileUpdated, onOpen
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Full Name</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Full Name</label>
               <input
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Target Role Title</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Target Role Title</label>
               <input
                 type="text"
                 value={targetRole}
                 onChange={(e) => setTargetRole(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Target Salary ($)</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Target Salary ($)</label>
               <input
                 type="number"
                 value={targetSalary}
                 onChange={(e) => setTargetSalary(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Experience (Years)</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Experience (Years)</label>
               <input
                 type="number"
                 value={experienceYears}
                 onChange={(e) => setExperienceYears(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Follow-up Days Threshold</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Follow-up Days Threshold</label>
               <input
                 type="number"
                 value={followUpDays}
                 onChange={(e) => setFollowUpDays(e.target.value)}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
             </div>
           </div>
 
           {/* Technical Skills Pills & Adder */}
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+            <label className="block text-xs font-semibold text-slate-700 mb-1.5">
               Resume Skills ({resumeSkills.length})
             </label>
-            <div className="flex flex-wrap gap-1.5 p-3 bg-slate-950/60 rounded-xl border border-slate-800 min-h-[80px] max-h-40 overflow-y-auto mb-2">
+            <div className="flex flex-wrap gap-1.5 p-3 bg-slate-50 rounded-xl border border-slate-200 min-h-[80px] max-h-40 overflow-y-auto mb-2">
               {resumeSkills.map((sk) => (
                 <span
                   key={sk}
-                  className="flex items-center gap-1.5 bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 px-2.5 py-1 rounded-lg text-xs font-medium"
+                  className="flex items-center gap-1.5 bg-white text-sky-700 border border-sky-200 px-2.5 py-1 rounded-lg text-xs font-semibold shadow-2xs"
                 >
                   <span>{sk}</span>
                   <button
                     type="button"
                     onClick={() => handleRemoveSkill(sk)}
-                    className="hover:text-rose-400"
+                    className="hover:text-rose-600 text-slate-400 font-bold ml-0.5"
                   >
                     ×
                   </button>
@@ -203,12 +203,12 @@ export default function ProfileModal({ isOpen, onClose, onProfileUpdated, onOpen
                     handleAddSkill(e);
                   }
                 }}
-                className="flex-1 px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="flex-1 px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
               <button
                 type="button"
                 onClick={handleAddSkill}
-                className="px-3.5 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl text-xs font-semibold"
+                className="px-3.5 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 rounded-xl text-xs font-semibold transition shadow-sm"
               >
                 + Add
               </button>
@@ -218,14 +218,14 @@ export default function ProfileModal({ isOpen, onClose, onProfileUpdated, onOpen
           {/* Raw Resume Text */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-semibold text-slate-300">
+              <label className="block text-xs font-semibold text-slate-700">
                 Raw Resume Text / Bio
               </label>
               <button
                 type="button"
                 onClick={handleAutoExtractSkills}
                 disabled={extracting}
-                className="text-xs text-emerald-400 hover:text-emerald-300 font-semibold flex items-center gap-1"
+                className="text-xs text-sky-600 hover:text-sky-700 font-semibold flex items-center gap-1"
               >
                 <Sparkles className="w-3.5 h-3.5" />
                 <span>Auto-Extract Skills</span>
@@ -236,22 +236,22 @@ export default function ProfileModal({ isOpen, onClose, onProfileUpdated, onOpen
               placeholder="Paste your resume or bio here..."
               value={resumeText}
               onChange={(e) => setResumeText(e.target.value)}
-              className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold transition"
+              className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold transition shadow-sm"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="px-5 py-2 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-slate-950 font-bold rounded-xl text-xs transition shadow-md active:scale-95"
+              className="px-5 py-2 bg-sky-600 hover:bg-sky-500 disabled:opacity-50 text-white font-bold rounded-xl text-xs transition shadow-sm active:scale-95"
             >
               {saving ? 'Updating...' : 'Save Profile'}
             </button>

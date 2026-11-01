@@ -65,14 +65,14 @@ export default function ApplicationModal({ isOpen, onClose, onSaved, initialStat
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm overflow-y-auto">
-      <div className="bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl my-8">
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-800">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm overflow-y-auto">
+      <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-2xl overflow-hidden shadow-2xl my-8">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-slate-50/70">
           <div>
-            <h3 className="text-base font-bold text-white">Track New Job Application</h3>
-            <p className="text-xs text-slate-400">AI will automatically analyze requirements and calculate your skill match score.</p>
+            <h3 className="text-base font-bold text-slate-900">Track New Job Application</h3>
+            <p className="text-xs text-slate-500">AI will automatically analyze requirements and calculate your skill match score.</p>
           </div>
-          <button onClick={onClose} className="p-1 text-slate-400 hover:text-white rounded-lg">
+          <button onClick={onClose} className="p-1.5 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -80,36 +80,36 @@ export default function ApplicationModal({ isOpen, onClose, onSaved, initialStat
         <form onSubmit={handleSubmit} className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Company Name *</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Company Name *</label>
               <input
                 type="text"
                 required
                 placeholder="e.g. Stripe, OpenAI, Google"
                 value={formData.company}
                 onChange={(e) => setFormData({ ...formData, company: e.target.value })}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Role Title *</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Role Title *</label>
               <input
                 type="text"
                 required
                 placeholder="e.g. Senior Full Stack Engineer"
                 value={formData.role}
                 onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Status</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Status</label>
               <select
                 value={formData.status}
                 onChange={(e) => setFormData({ ...formData, status: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               >
                 <option value="Wishlist">Wishlist</option>
                 <option value="Applied">Applied</option>
@@ -120,11 +120,11 @@ export default function ApplicationModal({ isOpen, onClose, onSaved, initialStat
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Priority</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Priority</label>
               <select
                 value={formData.priority}
                 onChange={(e) => setFormData({ ...formData, priority: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               >
                 <option value="High">High Priority</option>
                 <option value="Medium">Medium</option>
@@ -132,11 +132,11 @@ export default function ApplicationModal({ isOpen, onClose, onSaved, initialStat
               </select>
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Work Type</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Work Type</label>
               <select
                 value={formData.workType}
                 onChange={(e) => setFormData({ ...formData, workType: e.target.value })}
-                className="w-full px-3 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               >
                 <option value="Remote">Remote</option>
                 <option value="Hybrid">Hybrid</option>
@@ -147,94 +147,94 @@ export default function ApplicationModal({ isOpen, onClose, onSaved, initialStat
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Location</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Location</label>
               <input
                 type="text"
                 placeholder="e.g. San Francisco, CA / Remote"
                 value={formData.location}
                 onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Salary Min ($)</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Salary Min ($)</label>
               <input
                 type="number"
                 placeholder="130000"
                 value={formData.salaryMin}
                 onChange={(e) => setFormData({ ...formData, salaryMin: e.target.value })}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Salary Max ($)</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Salary Max ($)</label>
               <input
                 type="number"
                 placeholder="175000"
                 value={formData.salaryMax}
                 onChange={(e) => setFormData({ ...formData, salaryMax: e.target.value })}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">Job Description & Required Skills</label>
+            <label className="block text-xs font-semibold text-slate-700 mb-1">Job Description & Required Skills</label>
             <textarea
               rows={4}
               placeholder="Paste the job description or requirements here to enable automatic AI skill gap matching..."
               value={formData.jobDescription}
               onChange={(e) => setFormData({ ...formData, jobDescription: e.target.value })}
-              className="w-full px-3.5 py-2.5 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500"
+              className="w-full px-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Job URL</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Job URL</label>
               <input
                 type="text"
                 placeholder="https://company.com/jobs/..."
                 value={formData.jobUrl}
                 onChange={(e) => setFormData({ ...formData, jobUrl: e.target.value })}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1">Recruiter Name / Email</label>
+              <label className="block text-xs font-semibold text-slate-700 mb-1">Recruiter Name / Email</label>
               <input
                 type="text"
                 placeholder="Jane Doe (recruiter@company.com)"
                 value={formData.recruiterName}
                 onChange={(e) => setFormData({ ...formData, recruiterName: e.target.value })}
-                className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+                className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-semibold text-slate-300 mb-1">Notes & Follow-up Details</label>
+            <label className="block text-xs font-semibold text-slate-700 mb-1">Notes & Follow-up Details</label>
             <input
               type="text"
               placeholder="e.g. Applied via employee referral, ping recruiter on Thursday"
               value={formData.notes}
               onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
-              className="w-full px-3.5 py-2 bg-slate-800 border border-slate-700 rounded-xl text-xs text-white focus:outline-none focus:border-emerald-500"
+              className="w-full px-3.5 py-2 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-sky-500/20 focus:border-sky-500 transition"
             />
           </div>
 
-          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-800">
+          <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-100">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-xl text-xs font-semibold transition"
+              className="px-4 py-2 bg-white hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl text-xs font-semibold transition shadow-sm"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="px-5 py-2 bg-emerald-500 hover:bg-emerald-400 disabled:opacity-50 text-slate-950 font-bold rounded-xl text-xs transition shadow-md shadow-emerald-500/20 active:scale-95"
+              className="px-5 py-2 bg-sky-600 hover:bg-sky-500 disabled:opacity-50 text-white font-bold rounded-xl text-xs transition shadow-sm active:scale-95"
             >
               {saving ? 'Analyzing & Saving...' : 'Save Application'}
             </button>
