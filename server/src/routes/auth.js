@@ -204,27 +204,4 @@ router.put('/profile', auth, async (req, res) => {
   }
 });
 
-// POST /api/auth/switch-role - Fast role switch for demo / multi-module testing
-router.post('/switch-role', auth, async (req, res) => {
-  try {
-    const { role } = req.body;
-    if (!['employee', 'employer', 'admin'].includes(role)) {
-      return res.status(400).json({ message: 'Invalid role specified' });
-    }
-
-    const user = await User.findById(req.userId);
-    user.role = role;
-    if (role === 'employer' && !user.companyName) {
-      user.companyName = 'TechCorp Labs';
-      user.companyWebsite = 'https://techcorp.example.com';
-    }
-    await user.save();
-
-    res.json({ message: `Active workspace switched to ${role}`, user });
-  } catch (error) {
-    console.error('Role switch error:', error);
-    res.status(500).json({ message: 'Failed to switch role', error: error.message });
-  }
-});
-
 module.exports = router;

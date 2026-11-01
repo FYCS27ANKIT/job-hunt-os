@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import {
   Kanban,
@@ -16,7 +16,6 @@ import {
   Briefcase,
   Users,
   ShieldAlert,
-  ChevronDown,
   Building2,
   CheckCircle2,
   Upload
@@ -32,28 +31,8 @@ export default function Navbar({
   notificationCount,
   onRefresh
 }) {
-  const { user, logout, switchActiveRole } = useAuth();
-  const [roleMenuOpen, setRoleMenuOpen] = useState(false);
-  const [switching, setSwitching] = useState(false);
-
+  const { user, logout } = useAuth();
   const currentRole = user?.role || 'employee';
-
-  const handleRoleSwitch = async (newRole) => {
-    setRoleMenuOpen(false);
-    if (newRole === currentRole) return;
-    setSwitching(true);
-    try {
-      await switchActiveRole(newRole);
-      if (newRole === 'employee') setActiveTab('kanban');
-      else if (newRole === 'employer') setActiveTab('employer-main');
-      else if (newRole === 'admin') setActiveTab('admin-main');
-      if (onRefresh) onRefresh();
-    } catch (err) {
-      alert('Failed to switch role.');
-    } finally {
-      setSwitching(false);
-    }
-  };
 
   return (
     <header className="sticky top-0 z-40 bg-slate-900/95 backdrop-blur-md border-b border-slate-800">
@@ -70,79 +49,27 @@ export default function Navbar({
                   Job Hunt OS
                 </span>
 
-                {/* Role Workspace Badge with Dropdown Switcher */}
-                <div className="relative">
-                  <button
-                    onClick={() => setRoleMenuOpen(!roleMenuOpen)}
-                    disabled={switching}
-                    className={`flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-extrabold px-2 py-0.5 rounded-full border transition cursor-pointer ${
-                      currentRole === 'admin'
-                        ? 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30 hover:bg-indigo-500/25'
-                        : currentRole === 'employer'
-                        ? 'bg-teal-500/15 text-teal-300 border-teal-500/30 hover:bg-teal-500/25'
-                        : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30 hover:bg-emerald-500/25'
-                    }`}
-                    title="Click to switch between Employee, Employer, and Admin modules"
-                  >
-                    <span>
-                      {currentRole === 'admin' ? '🛡️ Admin' : currentRole === 'employer' ? '🏢 Employer' : '👤 Employee'}
-                    </span>
-                    <ChevronDown className="w-3 h-3 opacity-70" />
-                  </button>
-
-                  {/* Dropdown Menu */}
-                  {roleMenuOpen && (
-                    <div className="absolute left-0 mt-2 w-52 bg-slate-900 border border-slate-700/80 rounded-2xl p-1.5 shadow-2xl z-50 text-xs">
-                      <div className="text-[10px] uppercase font-bold text-slate-400 px-3 py-1.5 border-b border-slate-800">
-                        Switch Module Workspace
-                      </div>
-
-                      <button
-                        onClick={() => handleRoleSwitch('employee')}
-                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left font-bold transition ${
-                          currentRole === 'employee' ? 'bg-emerald-500/15 text-emerald-300' : 'text-slate-300 hover:bg-slate-800'
-                        }`}
-                      >
-                        <span>👤</span>
-                        <div>
-                          <div>Employee / Candidate</div>
-                          <div className="text-[10px] font-normal text-slate-400">Kanban, jobs, resume upload</div>
-                        </div>
-                      </button>
-
-                      <button
-                        onClick={() => handleRoleSwitch('employer')}
-                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left font-bold transition ${
-                          currentRole === 'employer' ? 'bg-teal-500/15 text-teal-300' : 'text-slate-300 hover:bg-slate-800'
-                        }`}
-                      >
-                        <span>🏢</span>
-                        <div>
-                          <div>Employer / Recruiter</div>
-                          <div className="text-[10px] font-normal text-slate-400">ATS applicants, job postings</div>
-                        </div>
-                      </button>
-
-                      <button
-                        onClick={() => handleRoleSwitch('admin')}
-                        className={`w-full flex items-center gap-2 px-3 py-2 rounded-xl text-left font-bold transition ${
-                          currentRole === 'admin' ? 'bg-indigo-500/15 text-indigo-300' : 'text-slate-300 hover:bg-slate-800'
-                        }`}
-                      >
-                        <span>🛡️</span>
-                        <div>
-                          <div>Super Administrator</div>
-                          <div className="text-[10px] font-normal text-slate-400">User controls, job moderation</div>
-                        </div>
-                      </button>
-                    </div>
-                  )}
+                {/* Role Workspace Badge (Static) */}
+                <div
+                  className={`flex items-center gap-1.5 text-[10px] uppercase tracking-wider font-extrabold px-2.5 py-0.5 rounded-full border ${
+                    currentRole === 'admin'
+                      ? 'bg-indigo-500/15 text-indigo-300 border-indigo-500/30'
+                      : currentRole === 'employer'
+                      ? 'bg-teal-500/15 text-teal-300 border-teal-500/30'
+                      : 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                  }`}
+                >
+                  <span>
+                    {currentRole === 'admin' ? '🛡️ Admin' : currentRole === 'employer' ? '🏢 Employer' : '👤 Employee'}
+                  </span>
                 </div>
               </div>
 
               <p className="text-xs text-slate-400 font-medium hidden sm:block">
                 {currentRole === 'employer' ? (user?.companyName || 'Employer Recruiting Platform') : currentRole === 'admin' ? 'Platform Governance & Control Console' : 'Smart Career & Job Hunt Workspace'}
               </p>
+            </div>
+          </div>
             </div>
           </div>
 

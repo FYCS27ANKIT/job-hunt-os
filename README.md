@@ -73,15 +73,13 @@
 
 ## ⚡ 1-Click Instant Demo Credentials
 
-Use the demo buttons on the login screen, or sign in with:
+Use the 1-click instant demo button on the login screen (`demo@jobhuntos.com`), or sign in with dedicated credentials:
 
 | Module | Email | Password | Role / Persona |
 | :--- | :--- | :--- | :--- |
 | **Employee** | `demo@jobhuntos.com` | `password123` | **Alex Rivera** (Senior Full Stack Engineer) |
 | **Employer** | `employer@techcorp.com` | `password123` | **Elena Rostova** (TechCorp Labs Talent Team) |
 | **Admin** | `admin@jobhuntos.com` | `password123` | **Jordan Vance** (Platform Super Administrator) |
-
-> **Pro Tip**: Use the role badge at the top-left of the navigation bar to switch between workspaces instantly without logging out!
 
 ---
 
@@ -119,7 +117,8 @@ job-hunt-os/
 ├── client/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── Navbar.jsx               # Navigation with 1-click role switcher
+│   │   │   ├── Sidebar.jsx              # Navigation sidebar with workspace info
+│   │   │   ├── Header.jsx               # Workspace header and notifications
 │   │   │   ├── ResumeManagerModal.jsx   # Candidate resume file upload & skills
 │   │   │   ├── JobBoardView.jsx         # Employee job explorer & 1-click apply
 │   │   │   ├── KanbanBoard.jsx          # Drag-and-drop pipeline board
@@ -135,9 +134,9 @@ job-hunt-os/
 │   │   │   ├── QuestionModal.jsx        # Question logger modal
 │   │   │   ├── NotificationsModal.jsx   # Scheduled reminders center
 │   │   │   ├── ProfileModal.jsx         # Profile settings with resume link
-│   │   │   └── AuthModal.jsx            # 1-Click demo logins for all 3 roles
+│   │   │   └── AuthModal.jsx            # Sign in, registration & instant demo launcher
 │   │   ├── context/
-│   │   │   └── AuthContext.jsx          # JWT session & active role provider
+│   │   │   └── AuthContext.jsx          # JWT session provider
 │   │   ├── services/
 │   │   │   └── api.js                   # Axios client with bearer interceptor
 │   │   └── App.jsx                      # Main app shell with role routing
@@ -154,7 +153,7 @@ job-hunt-os/
     │   ├── middleware/
     │   │   └── auth.js                  # JWT authentication middleware
     │   ├── routes/
-    │   │   ├── auth.js                  # Register, login, role switch
+    │   │   ├── auth.js                  # Register, login, profile
     │   │   ├── jobs.js                  # Platform jobs & 1-click candidate apply
     │   │   ├── resume.js                # Resume upload (multer) & skill extraction
     │   │   ├── employer.js              # Employer ATS applicants, stages & stats

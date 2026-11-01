@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import {
   Kanban,
@@ -10,7 +10,6 @@ import {
   FileText,
   Upload,
   CheckCircle2,
-  ChevronDown,
   Building2,
   ShieldAlert,
   LogOut,
@@ -28,27 +27,8 @@ export default function Sidebar({
   applicationCount = 0,
   interviewCount = 0
 }) {
-  const { user, logout, switchActiveRole } = useAuth();
-  const [roleMenuOpen, setRoleMenuOpen] = useState(false);
-  const [switching, setSwitching] = useState(false);
-
+  const { user, logout } = useAuth();
   const currentRole = user?.role || 'employee';
-
-  const handleRoleSwitch = async (newRole) => {
-    setRoleMenuOpen(false);
-    if (newRole === currentRole) return;
-    setSwitching(true);
-    try {
-      await switchActiveRole(newRole);
-      if (newRole === 'employee') setActiveTab('kanban');
-      else if (newRole === 'employer') setActiveTab('employer-main');
-      else if (newRole === 'admin') setActiveTab('admin-main');
-    } catch (err) {
-      alert('Failed to switch workspace role.');
-    } finally {
-      setSwitching(false);
-    }
-  };
 
   const navItems = [
     { id: 'kanban', label: 'Kanban Board', icon: Kanban, badge: applicationCount > 0 ? applicationCount : null },
@@ -102,80 +82,27 @@ export default function Sidebar({
               </button>
             </div>
 
-            {/* Role Workspace Selector */}
-            <div className="relative">
-              <button
-                onClick={() => setRoleMenuOpen(!roleMenuOpen)}
-                disabled={switching}
-                className={`w-full flex items-center justify-between px-3 py-2 rounded-xl border text-xs font-bold transition ${
-                  currentRole === 'admin'
-                    ? 'bg-indigo-50 text-indigo-700 border-indigo-200 hover:bg-indigo-100/80'
-                    : currentRole === 'employer'
-                    ? 'bg-teal-50 text-teal-700 border-teal-200 hover:bg-teal-100/80'
-                    : 'bg-sky-50 text-sky-700 border-sky-200 hover:bg-sky-100/80'
-                }`}
-              >
-                <div className="flex items-center gap-2 truncate">
-                  <span className="text-sm">
-                    {currentRole === 'admin' ? '🛡️' : currentRole === 'employer' ? '🏢' : '👤'}
-                  </span>
-                  <div className="text-left truncate">
-                    <div className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Active Role</div>
-                    <div className="truncate">
-                      {currentRole === 'admin' ? 'Super Admin' : currentRole === 'employer' ? 'Employer / Recruiter' : 'Employee (Candidate)'}
-                    </div>
+            {/* Active Account Info (Static indicator, no role switcher) */}
+            <div
+              className={`w-full flex items-center px-3 py-2 rounded-xl border text-xs font-bold ${
+                currentRole === 'admin'
+                  ? 'bg-indigo-50 text-indigo-700 border-indigo-200'
+                  : currentRole === 'employer'
+                  ? 'bg-teal-50 text-teal-700 border-teal-200'
+                  : 'bg-sky-50 text-sky-700 border-sky-200'
+              }`}
+            >
+              <div className="flex items-center gap-2 truncate">
+                <span className="text-sm">
+                  {currentRole === 'admin' ? '🛡️' : currentRole === 'employer' ? '🏢' : '👤'}
+                </span>
+                <div className="text-left truncate">
+                  <div className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">Account Role</div>
+                  <div className="truncate">
+                    {currentRole === 'admin' ? 'Super Admin' : currentRole === 'employer' ? (user?.companyName || 'Employer / Recruiter') : 'Employee (Candidate)'}
                   </div>
                 </div>
-                <ChevronDown className="w-3.5 h-3.5 opacity-70 shrink-0 ml-1 text-slate-500" />
-              </button>
-
-              {/* Role Dropdown */}
-              {roleMenuOpen && (
-                <div className="absolute left-0 right-0 mt-2 bg-white border border-slate-200 rounded-2xl p-1.5 shadow-xl z-50 text-xs">
-                  <div className="text-[10px] uppercase font-bold text-slate-400 px-3 py-1.5 border-b border-slate-100">
-                    Switch Workspace Module
-                  </div>
-
-                  <button
-                    onClick={() => handleRoleSwitch('employee')}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left font-bold transition ${
-                      currentRole === 'employee' ? 'bg-sky-50 text-sky-700' : 'text-slate-700 hover:bg-slate-50'
-                    }`}
-                  >
-                    <span>👤</span>
-                    <div>
-                      <div>Employee (Candidate)</div>
-                      <div className="text-[10px] font-normal text-slate-500">Kanban, jobs, resume upload</div>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => handleRoleSwitch('employer')}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left font-bold transition ${
-                      currentRole === 'employer' ? 'bg-teal-50 text-teal-700' : 'text-slate-700 hover:bg-slate-50'
-                    }`}
-                  >
-                    <span>🏢</span>
-                    <div>
-                      <div>Employer / Recruiter</div>
-                      <div className="text-[10px] font-normal text-slate-500">ATS applicants, job postings</div>
-                    </div>
-                  </button>
-
-                  <button
-                    onClick={() => handleRoleSwitch('admin')}
-                    className={`w-full flex items-center gap-2.5 px-3 py-2 rounded-xl text-left font-bold transition ${
-                      currentRole === 'admin' ? 'bg-indigo-50 text-indigo-700' : 'text-slate-700 hover:bg-slate-50'
-                    }`}
-                  >
-                    <span>🛡️</span>
-                    <div>
-                      <div>Super Administrator</div>
-                      <div className="text-[10px] font-normal text-slate-500">User controls, job moderation</div>
-                    </div>
-                  </button>
-                </div>
-              )}
+              </div>
             </div>
           </div>
 

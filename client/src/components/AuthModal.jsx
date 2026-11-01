@@ -6,7 +6,6 @@ import {
   Lock,
   Mail,
   User,
-  Building2,
   AlertCircle,
   Loader2
 } from 'lucide-react';
@@ -14,12 +13,10 @@ import {
 export default function AuthModal({ onLoggedIn }) {
   const { login, register, demoLogin } = useAuth();
   const [isRegister, setIsRegister] = useState(false);
-  const [role, setRole] = useState('employee'); // 'employee' or 'employer'
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [targetRole, setTargetRole] = useState('Full Stack Software Engineer');
-  const [companyName, setCompanyName] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -34,9 +31,7 @@ export default function AuthModal({ onLoggedIn }) {
           name,
           email,
           password,
-          role,
-          targetRole: role === 'employee' ? targetRole : undefined,
-          companyName: role === 'employer' ? companyName : undefined
+          targetRole
         });
       } else {
         await login(email, password);
@@ -50,15 +45,15 @@ export default function AuthModal({ onLoggedIn }) {
     }
   };
 
-  const handleQuickDemo = async (demoRole) => {
+  const handleQuickDemo = async () => {
     setError('');
     setLoading(true);
     try {
-      await demoLogin(demoRole);
+      await demoLogin();
       if (onLoggedIn) onLoggedIn();
     } catch (err) {
       console.error('Quick demo login error:', err);
-      setError(err.response?.data?.message || err.message || `Failed to sign in as ${demoRole}. Please try again.`);
+      setError(err.response?.data?.message || err.message || 'Failed to sign in with demo account. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -80,51 +75,24 @@ export default function AuthModal({ onLoggedIn }) {
             Job Hunt OS
           </h1>
           <p className="text-xs text-slate-500 mt-1 font-medium">
-            Smart Career Platform • Employee • Employer • Admin
+            Smart Career Platform & Job Search Workspace
           </p>
         </div>
 
-        {/* 1-Click Instant Module Launchers */}
-        <div className="mb-6 p-4 bg-slate-50/90 border border-slate-200 rounded-2xl">
-          <div className="flex items-center gap-1.5 text-[11px] font-bold text-slate-600 uppercase tracking-wider mb-2.5">
-            <Sparkles className="w-3.5 h-3.5 text-sky-600" />
-            <span>1-Click Instant Demo Launchers</span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('employee')}
-              disabled={loading}
-              className="p-3 bg-white hover:bg-sky-50/80 border border-slate-200 hover:border-sky-300 rounded-xl text-left transition shadow-sm active:scale-95 group"
-            >
-              <div className="text-base">👤</div>
-              <div className="font-bold text-xs text-slate-900 group-hover:text-sky-700 mt-1">Employee</div>
-              <div className="text-[10px] text-slate-500 leading-tight">Alex Rivera (Resume & Kanban)</div>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('employer')}
-              disabled={loading}
-              className="p-3 bg-white hover:bg-teal-50/80 border border-slate-200 hover:border-teal-300 rounded-xl text-left transition shadow-sm active:scale-95 group"
-            >
-              <div className="text-base">🏢</div>
-              <div className="font-bold text-xs text-slate-900 group-hover:text-teal-700 mt-1">Employer</div>
-              <div className="text-[10px] text-slate-500 leading-tight">TechCorp (Jobs & Pipeline)</div>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleQuickDemo('admin')}
-              disabled={loading}
-              className="p-3 bg-white hover:bg-indigo-50/80 border border-slate-200 hover:border-indigo-300 rounded-xl text-left transition shadow-sm active:scale-95 group"
-            >
-              <div className="text-base">🛡️</div>
-              <div className="font-bold text-xs text-slate-900 group-hover:text-indigo-700 mt-1">Admin</div>
-              <div className="text-[10px] text-slate-500 leading-tight">Super Admin (Governance)</div>
-            </button>
-          </div>
+        {/* 1-Click Instant Demo Launcher */}
+        <div className="mb-6 p-4 bg-sky-50/70 border border-sky-100 rounded-2xl text-center">
+          <button
+            type="button"
+            onClick={handleQuickDemo}
+            disabled={loading}
+            className="w-full py-2.5 px-4 bg-sky-600 hover:bg-sky-700 text-white font-extrabold text-xs rounded-xl transition shadow-md shadow-sky-600/20 active:scale-95 flex items-center justify-center gap-2"
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>Launch Demo Account (1-Click Instant)</span>
+          </button>
+          <p className="text-[10px] text-sky-800/80 mt-2 font-medium">
+            Pre-loaded with verified jobs, Kanban pipeline stages, and interview questions.
+          </p>
         </div>
 
         <div className="relative flex items-center justify-center mb-6">
@@ -145,37 +113,6 @@ export default function AuthModal({ onLoggedIn }) {
         <form onSubmit={handleSubmit} className="space-y-4">
           {isRegister && (
             <>
-              {/* Role Selector during Registration */}
-              <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1.5">
-                  Choose Account Type / Module:
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setRole('employee')}
-                    className={`py-2 px-3 rounded-xl border text-xs font-bold text-center transition ${
-                      role === 'employee'
-                        ? 'bg-sky-600 text-white border-sky-600 shadow-sm'
-                        : 'bg-white border-slate-300 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    }`}
-                  >
-                    👤 Employee (Job Seeker)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setRole('employer')}
-                    className={`py-2 px-3 rounded-xl border text-xs font-bold text-center transition ${
-                      role === 'employer'
-                        ? 'bg-teal-600 text-white border-teal-600 shadow-sm'
-                        : 'bg-white border-slate-300 text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    }`}
-                  >
-                    🏢 Employer (Recruiter)
-                  </button>
-                </div>
-              </div>
-
               <div>
                 <label className="block text-xs font-semibold text-slate-700 mb-1">Your Name</label>
                 <div className="relative">
@@ -191,30 +128,16 @@ export default function AuthModal({ onLoggedIn }) {
                 </div>
               </div>
 
-              {role === 'employee' ? (
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Target Role Title</label>
-                  <input
-                    type="text"
-                    placeholder="Senior Full Stack Engineer"
-                    value={targetRole}
-                    onChange={(e) => setTargetRole(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 transition"
-                  />
-                </div>
-              ) : (
-                <div>
-                  <label className="block text-xs font-semibold text-slate-700 mb-1">Company Name</label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="e.g. Stripe, TechCorp, Acme Inc."
-                    value={companyName}
-                    onChange={(e) => setCompanyName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-teal-500 focus:ring-2 focus:ring-teal-100 transition"
-                  />
-                </div>
-              )}
+              <div>
+                <label className="block text-xs font-semibold text-slate-700 mb-1">Target Role Title</label>
+                <input
+                  type="text"
+                  placeholder="Senior Full Stack Engineer"
+                  value={targetRole}
+                  onChange={(e) => setTargetRole(e.target.value)}
+                  className="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-100 transition"
+                />
+              </div>
             </>
           )}
 
