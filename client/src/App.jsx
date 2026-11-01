@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import API from './services/api';
 
-import Navbar from './components/Navbar';
+import Sidebar from './components/Sidebar';
+import Header from './components/Header';
 import KanbanBoard from './components/KanbanBoard';
 import JobBoardView from './components/JobBoardView';
 import SkillGapView from './components/SkillGapView';
@@ -25,6 +26,7 @@ function MainApp() {
   const { user, token, loading: authLoading } = useAuth();
 
   const [activeTab, setActiveTab] = useState('kanban');
+  const [mobileOpen, setMobileOpen] = useState(false);
   const [applications, setApplications] = useState([]);
   const [interviews, setInterviews] = useState([]);
   const [questions, setQuestions] = useState([]);
@@ -120,102 +122,120 @@ function MainApp() {
   const currentRole = user.role || 'employee';
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col">
-      {/* Navigation Bar */}
-      <Navbar
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex">
+      {/* Vertical Navigation Sidebar */}
+      <Sidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenNewAppModal={() => {
           setInitialAppStatus('Applied');
           setIsNewAppModalOpen(true);
         }}
-        onOpenNotifications={() => setIsNotificationsOpen(true)}
-        onOpenProfile={() => setIsProfileOpen(true)}
         onOpenResumeModal={() => setIsResumeModalOpen(true)}
-        notificationCount={unreadCount}
-        onRefresh={fetchData}
+        onOpenProfile={() => setIsProfileOpen(true)}
+        mobileOpen={mobileOpen}
+        setMobileOpen={setMobileOpen}
+        applicationCount={applications.length}
+        interviewCount={interviews.length}
       />
 
-      {/* Main Workspace Body */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        {/* MODULE 1: EMPLOYER / RECRUITER */}
-        {currentRole === 'employer' && (
-          <EmployerModule onRefreshAll={fetchData} />
-        )}
+      {/* Main Content Area (Offset by lg:pl-72 to fit sidebar) */}
+      <div className="flex-1 flex flex-col min-w-0 lg:pl-72">
+        {/* Top Header */}
+        <Header
+          activeTab={activeTab}
+          onOpenNewAppModal={() => {
+            setInitialAppStatus('Applied');
+            setIsNewAppModalOpen(true);
+          }}
+          onOpenNotifications={() => setIsNotificationsOpen(true)}
+          onOpenProfile={() => setIsProfileOpen(true)}
+          notificationCount={unreadCount}
+          onRefresh={fetchData}
+          setMobileOpen={setMobileOpen}
+        />
 
-        {/* MODULE 2: ADMIN GOVERNANCE */}
-        {currentRole === 'admin' && (
-          <AdminModule onRefreshAll={fetchData} />
-        )}
+        {/* Dynamic Main Workspace Body */}
+        <main className="flex-1 p-4 sm:p-6 lg:p-8 max-w-7xl w-full mx-auto">
+          {/* MODULE 1: EMPLOYER / RECRUITER */}
+          {currentRole === 'employer' && (
+            <EmployerModule onRefreshAll={fetchData} />
+          )}
 
-        {/* MODULE 3: EMPLOYEE / CANDIDATE */}
-        {currentRole === 'employee' && (
-          <>
-            {activeTab === 'kanban' && (
-              <KanbanBoard
-                applications={applications}
-                onUpdateStatus={handleUpdateStatus}
-                onSelectApplication={(app) => setSelectedApplication(app)}
-                onOpenNewModal={(status) => {
-                  setInitialAppStatus(status);
-                  setIsNewAppModalOpen(true);
-                }}
-              />
-            )}
+          {/* MODULE 2: ADMIN GOVERNANCE */}
+          {currentRole === 'admin' && (
+            <AdminModule onRefreshAll={fetchData} />
+          )}
 
-            {activeTab === 'job-board' && (
-              <JobBoardView
-                onApplicationCreated={fetchData}
-                onOpenResumeModal={() => setIsResumeModalOpen(true)}
-              />
-            )}
+          {/* MODULE 3: EMPLOYEE / CANDIDATE */}
+          {currentRole === 'employee' && (
+            <>
+              {activeTab === 'kanban' && (
+                <KanbanBoard
+                  applications={applications}
+                  onUpdateStatus={handleUpdateStatus}
+                  onSelectApplication={(app) => setSelectedApplication(app)}
+                  onOpenNewModal={(status) => {
+                    setInitialAppStatus(status);
+                    setIsNewAppModalOpen(true);
+                  }}
+                />
+              )}
 
-            {activeTab === 'skill-gap' && (
-              <SkillGapView
-                applications={applications}
-                onRefreshApplications={fetchData}
-                onSelectApplication={(app) => setSelectedApplication(app)}
-                onOpenProfile={() => setIsProfileOpen(true)}
-                onOpenResumeModal={() => setIsResumeModalOpen(true)}
-              />
-            )}
+              {activeTab === 'job-board' && (
+                <JobBoardView
+                  onApplicationCreated={fetchData}
+                  onOpenResumeModal={() => setIsResumeModalOpen(true)}
+                />
+              )}
 
-            {activeTab === 'interviews' && (
-              <InterviewsView
-                interviews={interviews}
-                onOpenNewInterviewModal={() => {
-                  setInterviewApplication(null);
-                  setIsInterviewModalOpen(true);
-                }}
-                onOpenAddQuestionModal={(interview) => {
-                  setQuestionInterview(interview);
-                  setIsQuestionModalOpen(true);
-                }}
-                onSelectInterview={(interview) => {
-                  const matchedApp = applications.find(a => a._id === interview.application?._id || a._id === interview.application);
-                  if (matchedApp) setSelectedApplication(matchedApp);
-                }}
-                onUpdateInterviewStatus={handleUpdateInterviewStatus}
-              />
-            )}
+              {activeTab === 'skill-gap' && (
+                <SkillGapView
+                  applications={applications}
+                  onRefreshApplications={fetchData}
+                  onSelectApplication={(app) => setSelectedApplication(app)}
+                  onOpenProfile={() => setIsProfileOpen(true)}
+                  onOpenResumeModal={() => setIsResumeModalOpen(true)}
+                />
+              )}
 
-            {activeTab === 'questions' && (
-              <QuestionBankView
-                questions={questions}
-                onRefreshQuestions={fetchData}
-                onOpenNewQuestionModal={() => {
-                  setQuestionInterview(null);
-                  setIsQuestionModalOpen(true);
-                }}
-              />
-            )}
+              {activeTab === 'interviews' && (
+                <InterviewsView
+                  interviews={interviews}
+                  onOpenNewInterviewModal={() => {
+                    setInterviewApplication(null);
+                    setIsInterviewModalOpen(true);
+                  }}
+                  onOpenAddQuestionModal={(interview) => {
+                    setQuestionInterview(interview);
+                    setIsQuestionModalOpen(true);
+                  }}
+                  onSelectInterview={(interview) => {
+                    const matchedApp = applications.find(a => a._id === interview.application?._id || a._id === interview.application);
+                    if (matchedApp) setSelectedApplication(matchedApp);
+                  }}
+                  onUpdateInterviewStatus={handleUpdateInterviewStatus}
+                />
+              )}
 
-            {activeTab === 'analytics' && (
-              <AnalyticsView onRefreshAll={fetchData} />
-            )}
-          </>
-        )}
-      </main>
+              {activeTab === 'questions' && (
+                <QuestionBankView
+                  questions={questions}
+                  onRefreshQuestions={fetchData}
+                  onOpenNewQuestionModal={() => {
+                    setQuestionInterview(null);
+                    setIsQuestionModalOpen(true);
+                  }}
+                />
+              )}
+
+              {activeTab === 'analytics' && (
+                <AnalyticsView onRefreshAll={fetchData} />
+              )}
+            </>
+          )}
+        </main>
+      </div>
 
       {/* Global Modals */}
       <ResumeManagerModal
